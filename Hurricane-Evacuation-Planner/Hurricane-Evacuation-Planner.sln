@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28010.2046
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hurricane-Evacuation-Planner", "Hurricane-Evacuation-Planner\Hurricane-Evacuation-Planner.csproj", "{9C5838F7-A98A-49B7-A383-A30C3B7D9C20}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hurricane-Evacuation-PlannerTests", "Hurricane-Evacuation-PlannerTests\Hurricane-Evacuation-PlannerTests.csproj", "{05778D1F-8AA4-4904-A30B-022D35E2AF12}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{9C5838F7-A98A-49B7-A383-A30C3B7D9C20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C5838F7-A98A-49B7-A383-A30C3B7D9C20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C5838F7-A98A-49B7-A383-A30C3B7D9C20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05778D1F-8AA4-4904-A30B-022D35E2AF12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05778D1F-8AA4-4904-A30B-022D35E2AF12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05778D1F-8AA4-4904-A30B-022D35E2AF12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05778D1F-8AA4-4904-A30B-022D35E2AF12}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -7,5 +7,6 @@
         int V1 { get; }
         int V2 { get; }
         double Weight { get; }
+        IEdge Clone();
     }
 }

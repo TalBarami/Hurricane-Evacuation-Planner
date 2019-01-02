@@ -3,22 +3,29 @@
     class Edge : IEdge
     {
         public int Id { get; }
-        public string Name => $"E{Id.ToString()}";
+        public string Name => $"E{Id}";
         public int V1 { get; }
         public int V2 { get; }
         public double Weight { get; }
-        public double BlockageProbability { get; }
 
-        public Edge(int id, int v1, int v2, double weight, double blockageProbability)
+        public Edge(int id, int v1, int v2, double weight)
         {
             Id = id;
             V1 = v1;
             V2 = v2;
             Weight = weight;
-            BlockageProbability = blockageProbability;
         }
-        public Edge(int id, IVertex v1, IVertex v2, double weight, double blockageProbability) : this(id, v1.Id, v2.Id, weight, blockageProbability)
+        public Edge(int id, IVertex v1, IVertex v2, double weight) : this(id, v1.Id, v2.Id, weight)
         {
+        }
+
+        public Edge(Edge other) : this(other.Id, other.V1, other.V2, other.Weight)
+        {
+        }
+
+        public virtual IEdge Clone()
+        {
+            return new Edge(this);
         }
 
         public override bool Equals(object obj)

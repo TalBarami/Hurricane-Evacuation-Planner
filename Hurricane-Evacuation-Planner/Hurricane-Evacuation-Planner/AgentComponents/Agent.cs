@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Hurricane_Evacuation_Planner.Environment;
-using Hurricane_Evacuation_Planner.GraphComponents;
+﻿using Hurricane_Evacuation_Planner.GraphComponents;
 
 namespace Hurricane_Evacuation_Planner.AgentComponents
 {
@@ -37,6 +31,11 @@ namespace Hurricane_Evacuation_Planner.AgentComponents
         public IAgent Clone()
         {
             return new Agent(this);
+        }
+
+        public override string ToString()
+        {
+            return $"Agent({Position},C{Carry},S{Saved})";
         }
     }
 }

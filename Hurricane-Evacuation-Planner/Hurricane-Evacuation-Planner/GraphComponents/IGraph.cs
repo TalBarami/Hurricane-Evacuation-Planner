@@ -14,7 +14,7 @@ namespace Hurricane_Evacuation_Planner.GraphComponents
         IEdge Edge(IVertex v1, IVertex v2);
 
         List<Path> Dfs(IVertex src, IVertex dst);
-        IGraph Block(IEdge e);
+        void Block(IEdge e);
         IGraph Clone();
     }
 }

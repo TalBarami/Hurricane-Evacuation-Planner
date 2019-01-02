@@ -1,12 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Hurricane_Evacuation_Planner.Environment
+﻿namespace Hurricane_Evacuation_Planner.Environment
 {
-    class Simulator
+    public class Simulator
     {
+        public int Deadline { get; }
+        public IState State { get; }
+        public StatesGenerator Clazz { get; }
+
+        public Simulator(IState initialState)
+        {
+            Deadline = initialState.Deadline;
+            State = initialState;
+            Clazz = new StatesGenerator(State);
+        }
+
     }
 }

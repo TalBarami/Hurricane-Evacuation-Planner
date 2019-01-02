@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Hurricane_Evacuation_Planner.AgentComponents;
 using Hurricane_Evacuation_Planner.Environment;
 using Hurricane_Evacuation_Planner.GraphComponents;
-using Hurricane_Evacuation_Planner.GraphComponents.Vertices;
+using Hurricane_Evacuation_Planner.GraphComponents.SimulatorGraphComponents;
 
 namespace Hurricane_Evacuation_Planner.Parser
 {
-    class FileParser
+    public class FileParser
     {
         private const string Vertex = "#V";
         private const string Edge = "#E";
@@ -19,14 +16,12 @@ namespace Hurricane_Evacuation_Planner.Parser
         private const string Start = "#Start";
         private const string Shelter = "#Shelter";
         private const string Deadline = "#Deadline";
-        
         private const string Blockage = "B";
-        private const string People = "P";
 
         private const char Whitespace = ' ';
         private const char Comment = ';';
 
-        public IState ParseFile(string path)
+        public static State ParseFile(string path)
         {
             var lines = File.ReadAllLines(path).Select(line => line.Split(Comment)[0].Trim()).Where(line => !string.IsNullOrEmpty(line)).ToList();
 
@@ -36,10 +31,11 @@ namespace Hurricane_Evacuation_Planner.Parser
             var agent = new Agent(graph.Vertex(start));
 
             var deadline = int.Parse(lines.First(line => line.StartsWith(Deadline)).Split(Whitespace)[1]);
-            return new State(graph, agent);
+
+            return new State(deadline, graph, agent);
         }
 
-        private IGraph CreateGraph(List<string> lines)
+        private static IGraph CreateGraph(List<string> lines)
         {
             var verticesCount = int.Parse(lines.First(l => l.StartsWith(Vertex)).Split(Whitespace)[1]);
             var evacuees = lines.Where(l => l.StartsWith(Evacuees)).Select(l => l.Split(Whitespace)).ToDictionary(l => int.Parse(l[1]), l => int.Parse(l[2]));
@@ -51,7 +47,7 @@ namespace Hurricane_Evacuation_Planner.Parser
         }
 
 
-        private List<IVertex> ParseVertices(int count, Dictionary<int, int> evacuees, int shelter)
+        private static List<IVertex> ParseVertices(int count, Dictionary<int, int> evacuees, int shelter)
         {
             var vertices = new List<IVertex>();
             for (var i = 0; i < count; i++)
@@ -74,7 +70,7 @@ namespace Hurricane_Evacuation_Planner.Parser
             return vertices;
         }
 
-        private List<IEdge> ParseEdges(List<string[]> edgesData)
+        private static List<IEdge> ParseEdges(List<string[]> edgesData)
         {
             var edges = new List<IEdge>();
             foreach (var eData in edgesData)
@@ -82,14 +78,16 @@ namespace Hurricane_Evacuation_Planner.Parser
                 var eid = int.Parse(eData[1]);
                 var v1 = int.Parse(eData[2]);
                 var v2 = int.Parse(eData[3]);
-                var w = int.Parse(eData[4]);
-                var b = 0.0f;
+                var w = double.Parse(eData[4]);
                 if (eData.Contains(Blockage))
                 {
-                    b = int.Parse(eData[6]);
+                    var b = double.Parse(eData[6]);
+                    edges.Add(new MaybeBlockedEdge(eid, v1, v2, w, b));
                 }
-
-                edges.Add(new Edge(eid, v1, v2, w, b));
+                else
+                {
+                    edges.Add(new Edge(eid, v1, v2, w));
+                }
             }
 
             return edges;

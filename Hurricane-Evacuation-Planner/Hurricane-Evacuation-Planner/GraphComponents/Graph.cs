@@ -14,7 +14,7 @@ namespace Hurricane_Evacuation_Planner.GraphComponents
         public IEdge Edge(IEdge e) => Edge(e.Id);
 
         public IEdge Edge(IVertex v1, IVertex v2) =>
-            Edges.First(e => (e.V1 == v1.Id || e.V2 == v2.Id) && (e.V1 == v2.Id || e.V2 == v2.Id));
+            Edges.First(e => (e.V1 == v1.Id || e.V2 == v1.Id) && (e.V1 == v2.Id || e.V2 == v2.Id));
 
         public Graph(List<IVertex> vertices, List<IEdge> edges)
         {
@@ -32,15 +32,13 @@ namespace Hurricane_Evacuation_Planner.GraphComponents
             });
         }
 
-        private Graph(IGraph other) : this(other.Vertices.Select(v => v.Clone()).ToList(), new List<IEdge>(other.Edges))
+        private Graph(IGraph other) : this(other.Vertices.Select(v => v.Clone()).ToList(), other.Edges.Select(e => e.Clone()).ToList())
         {
         }
 
-        public IGraph Block(IEdge e)
+        public void Block(IEdge e)
         {
-            var g = new Graph(this);
-            g.RemoveEdge(e);
-            return g;
+            RemoveEdge(e);
         }
 
         public IGraph Clone()
@@ -71,7 +69,7 @@ namespace Hurricane_Evacuation_Planner.GraphComponents
         {
             if (src.Equals(dst))
             {
-                return new List<Path> { new Path(this, new List<IEdge>{new Edge(-1, src, src, 0, 0)}) };
+                return new List<Path> { new Path(this, new List<IEdge>{new Edge(-1, src, src, 0)}) };
             }
             var lst = new List<Path>();
             var queue = new Queue<QueueItem>();
