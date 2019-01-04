@@ -5,6 +5,7 @@ Sequential decision making under uncertainty using belief-state MDP for decision
 
 ### Domain:
 The domain description is similar to that described in assignment 1 (Hurricane-Evacuation), except that again we do not know the locations of the blocakges. For simplicity, however, we will assume that the blockages occur independently, with a known given probability. They are revealed with certainty when the agent reaches a neigbouring vertex.
+
 We will also assumes that the number of evacuees at each vertex is known, and is always less than 5.
 Thus, in the current problem to be solved, we are given a weighted undirected graph, where each edge has a known probability of being blocked. These distributions are jointly independent.
 - The agent's only actions are traveling between vertices.
