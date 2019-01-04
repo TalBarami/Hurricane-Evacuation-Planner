@@ -1,6 +1,6 @@
 ﻿namespace Hurricane_Evacuation_Planner.GraphComponents
 {
-    class Edge : IEdge
+    public class Edge : IEdge
     {
         public int Id { get; }
         public string Name => $"E{Id}";

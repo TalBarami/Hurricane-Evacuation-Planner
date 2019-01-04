@@ -46,7 +46,7 @@
     <Compile Include="AgentComponents\Agent.cs" />
     <Compile Include="AgentComponents\IAgent.cs" />
     <Compile Include="AgentComponents\Traverse.cs" />
-    <Compile Include="Environment\StatesGenerator.cs" />
+    <Compile Include="Environment\ValueIteration.cs" />
     <Compile Include="Environment\IState.cs" />
     <Compile Include="Environment\Simulator.cs" />
     <Compile Include="Environment\State.cs" />

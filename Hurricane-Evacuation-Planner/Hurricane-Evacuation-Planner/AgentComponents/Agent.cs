@@ -4,17 +4,21 @@ namespace Hurricane_Evacuation_Planner.AgentComponents
 {
     class Agent : IAgent
     {
-        public IVertex Position { get; set; }
+        public int Position { get; set; }
         public int Carry { get; set; }
         public int Saved { get; set; }
 
-        public Agent(IVertex position, int carry, int saved)
+        public Agent(int position, int carry, int saved)
         {
             Position = position;
             Carry = carry;
             Saved = saved;
         }
-        public Agent(IVertex position) : this(position, 0, 0)
+
+        public Agent(IVertex position, int carry, int saved) : this(position.Id, carry, saved)
+        {
+        }
+        public Agent(IVertex position) : this(position.Id, 0, 0)
         {
         }
 
@@ -24,7 +28,7 @@ namespace Hurricane_Evacuation_Planner.AgentComponents
 
         public void Visit(IVertex v)
         {
-            Position = v;
+            Position = v.Id;
             v.Accept(this);
         }
 

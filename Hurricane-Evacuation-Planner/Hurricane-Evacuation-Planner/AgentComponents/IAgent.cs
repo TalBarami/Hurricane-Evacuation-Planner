@@ -4,7 +4,7 @@ namespace Hurricane_Evacuation_Planner.AgentComponents
 {
     public interface IAgent
     {
-        IVertex Position { get; }
+        int Position { get; }
         int Carry { get; set; }
         int Saved { get; set; }
         IAgent Clone();

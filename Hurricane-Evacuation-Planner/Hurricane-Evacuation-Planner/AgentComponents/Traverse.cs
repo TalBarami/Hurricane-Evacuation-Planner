@@ -9,6 +9,8 @@ namespace Hurricane_Evacuation_Planner.AgentComponents
 {
     public class Traverse
     {
+        private const double Discount = 1.0;
+
         public IState OldState { get; }
         public List<IState> NewStates { get; }
         public IEdge TraversalEdge { get; }
@@ -18,15 +20,6 @@ namespace Hurricane_Evacuation_Planner.AgentComponents
             OldState = oldState;
             TraversalEdge = OldState.Graph.Edge(OldState.Agent.Position, dst);
             NewStates = GeneratePossibleStates(dst);
-
-            /*NewState = OldState.Clone();
-            NewState.Source = this;
-            
-            var graph = NewState.Graph;
-            var agent = NewState.Agent;
-            TraversalEdge = graph.Edge(agent.Position, dst);
-            agent.Visit(graph.Vertex(dst));
-            NewState.Time += TraversalEdge.Weight;*/
         }
 
         public List<IState> GeneratePossibleStates(IVertex dst)
@@ -38,19 +31,24 @@ namespace Hurricane_Evacuation_Planner.AgentComponents
             for (var i = 0; i < length; i++)
             {
                 var possibleState = OldState.Clone();
+                possibleState.Source = this;
                 var blockedEdges = Convert.ToString(i, 2).PadLeft(unknownEdges.Count, '0').Select(c => c != '0').ToArray();
-
+                var stateProbability = 1.0;
                 for (var j = 0; j < unknownEdges.Count; j++)
                 {
                     if (blockedEdges[j])
                     {
+                        stateProbability *= unknownEdges[j].BlockageProbability;
                         possibleState.Graph.Block(unknownEdges[j]);
                     }
                     else
                     {
-                        unknownEdges[j].BlockageProbability = 0;
+                        stateProbability *= 1 - unknownEdges[j].BlockageProbability;
+                        possibleState.Graph.Free(unknownEdges[j]);
                     }
                 }
+
+                possibleState.Probability = stateProbability;
                 result.Add(possibleState);
             }
 
@@ -59,15 +57,31 @@ namespace Hurricane_Evacuation_Planner.AgentComponents
             return result;
         }
 
-        public void UpdateState(IState state, IVertex v)
+        private void UpdateState(IState state, IVertex v)
         {
-            state.Agent.Visit(state.Graph.Vertex(v));
             state.Time += TraversalEdge.Weight;
+            if (state.Time <= state.Deadline)
+            {
+                state.Graph.Vertex(v).Accept(state.Agent);
+                state.Agent.Visit(state.Graph.Vertex(v));
+                state.Graph.Update(v);
+            }
+        }
+
+        public double ExpectedValue()
+        {
+            var sum = 0.0;
+            foreach (var state in NewStates)
+            {
+                sum += state.Probability * (OldState.Reward + Discount * state.Utility);
+            }
+
+            return sum;
         }
 
         public override string ToString()
         {
-            return $"Traverse from {OldState.Agent.Position} to {NewStates[0].Agent.Position} at cost {TraversalEdge.Weight}";
+            return TraversalEdge.ToString();
         }
     }
 }

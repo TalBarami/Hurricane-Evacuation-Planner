@@ -14,7 +14,7 @@ namespace Hurricane_Evacuation_Planner.GraphComponents.SimulatorGraphComponents
 
         public override void Accept(IAgent agent)
         {
-            agent.Saved = agent.Carry;
+            agent.Saved += agent.Carry;
             agent.Carry = 0;
         }
 

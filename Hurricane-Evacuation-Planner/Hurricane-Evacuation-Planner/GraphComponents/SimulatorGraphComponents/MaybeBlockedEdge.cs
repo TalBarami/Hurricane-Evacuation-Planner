@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Hurricane_Evacuation_Planner.GraphComponents.SimulatorGraphComponents
 {
-    class MaybeBlockedEdge : Edge
+    public class MaybeBlockedEdge : Edge
     {
         public double BlockageProbability { get; set; }
-        public bool ActuallyBlocked { get; }
+        public bool ActuallyBlocked { get; set; }
         public MaybeBlockedEdge(int id, int v1, int v2, double weight, double blockageProbability) : base(id, v1, v2, weight)
         {
             BlockageProbability = blockageProbability;
@@ -26,7 +26,8 @@ namespace Hurricane_Evacuation_Planner.GraphComponents.SimulatorGraphComponents
 
         public override string ToString()
         {
-            return $"{base.ToString()}B{BlockageProbability}";
+            var b = ActuallyBlocked ? "(B)" : "(F)";
+            return $"{base.ToString()}B{BlockageProbability}{b}";
         }
 
         public override IEdge Clone()
