@@ -14,13 +14,16 @@ Thus, in the current problem to be solved, we are given a weighted undirected gr
 The graph can be provided in a manner similar to previous assignments, for example:
 ```
 #V 5    ; number of vertices n in graph (from 1 to n)
-#V 3 Ev2  ; Vertex 3, has 3 evacuees
-#V 4 Ev1  ; Vertex 4, has 1 evacuee
-#E1 1 2 W3   ; Edge from vertex 1 to vertex 2, weight 3
-#E2 2 3 W2   ; Edge from vertex 2 to vertex 3, weight 2
-#E3 3 4 W3 B0.3  ; Edge from vertex 3 to vertex 4, weight 3, probability of blockage 0.3
-#E4 4 5 W1   ; Edge from vertex 4 to vertex 5, weight 1
-#E5 2 4 W4   ; Edge from vertex 2 to vertex 4, weight 4
+
+#P 3 2  ; Vertex 3, has 2 evacuees
+#P 4 1  ; Vertex 4, has 1 evacuee
+
+#E 1 1 2 3   ; Edge from vertex 1 to vertex 2, weight 3
+#E 2 2 3 2   ; Edge from vertex 2 to vertex 3, weight 2
+#E 3 3 4 3 B 0.3  ; Edge from vertex 3 to vertex 4, weight 3, probability of blockage 0.3
+#E 4 4 5 1   ; Edge from vertex 4 to vertex 5, weight 1
+#E 5 2 4 4   ; Edge from vertex 2 to vertex 4, weight 4
+
 #Deadline 10
 #Start 1
 #Shelter 5
