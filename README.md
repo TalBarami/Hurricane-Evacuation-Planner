@@ -10,7 +10,7 @@ We will also assumes that the number of evacuees at each vertex is known, and is
 Thus, in the current problem to be solved, we are given a weighted undirected graph, where each edge has a known probability of being blocked. These distributions are jointly independent.
 - The agent's only actions are traveling between vertices.
 - Traversal times are the weight of the edge.
-- or simplicity, we will assume only one agent, starting at s, and only one shelter at vertex t, The problem is to find a policy that saves (in expectation) as many people as possible before the deadline.
+- For simplicity, we will assume only one agent, starting at s, and only one shelter at vertex t, The problem is to find a policy that saves (in expectation) as many people as possible before the deadline.
 
 The graph can be provided in a manner similar to previous assignments, for example:
 ```
