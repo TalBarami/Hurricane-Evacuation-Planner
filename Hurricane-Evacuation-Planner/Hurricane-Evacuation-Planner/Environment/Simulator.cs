@@ -8,7 +8,11 @@ namespace Hurricane_Evacuation_Planner.Environment
     {
         public int Deadline { get; }
         public IState InitialState { get; }
+        public IState FinalState { get; private set; }
         public ValueIteration Policy { get; }
+        public double Score => FinalState.Agent.Saved;
+
+        private static readonly Random Random = new Random(123);
 
         public Simulator(IState initialInitialState)
         {
@@ -20,20 +24,23 @@ namespace Hurricane_Evacuation_Planner.Environment
 
         public void Start()
         {
+            InitialState.Graph.Edges.OfType<MaybeBlockedEdge>().ToList().ForEach(e => e.ActuallyBlocked = Random.NextDouble() <= e.BlockageProbability);
             var currentState = InitialState;
             while (!currentState.Goal)
             {
-                Console.WriteLine($"Current State: {StateToString(currentState)}");
-                Console.WriteLine("Possible transitions:");
+                /*Console.WriteLine($"Current State: {StateToString(currentState)}");
+                Console.WriteLine("Possible transitions:");*/
                 var possibleMoves = string.Join("\n", currentState.ValidMoves.Select(vm => $"\t{vm} -> \t{string.Join("\n\t\t\t", vm.NewStates.Select(StateToString))}"));
 
-                Console.WriteLine(possibleMoves);
+                //Console.WriteLine(possibleMoves);
                 var move = currentState.BestMove;
-                Console.WriteLine($"Selected Action: {move} U{move.ExpectedValue()}\n");
+                //Console.WriteLine($"Selected Action: {move} U{move.ExpectedValue()}\n");
                 currentState = move.NewStates.First(s => InitialState.Match(s));
             }
-            Console.WriteLine($"Final State: {StateToString(currentState)}\n");
-            Console.WriteLine("Simulation is over.");
+
+            FinalState = currentState;
+            /*Console.WriteLine($"Final State: {StateToString(FinalState)}\n");
+            Console.WriteLine("Simulation is over.");*/
 
             /*Console.WriteLine();
             Policy.States.ForEach(s => Console.WriteLine($"{s}\n"));*/

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net.NetworkInformation;
 using Hurricane_Evacuation_Planner.Environment;
 using Hurricane_Evacuation_Planner.GraphComponents;
 using Hurricane_Evacuation_Planner.GraphComponents.SimulatorGraphComponents;
@@ -11,20 +12,18 @@ namespace Hurricane_Evacuation_Planner
     {
         static void Main(string[] args)
         {
-            var state = FileParser.ParseFile("C:/Users/Tal Barami/Documents/GitHub/Hurricane-Evacuation-Planner/Hurricane-Evacuation-Planner/Hurricane-Evacuation-PlannerTests/resources/file3.txt");
-            var maybeBlocked = state.Graph.Edges.OfType<MaybeBlockedEdge>().ToList();
+            var state = FileParser.ParseFile(
+                "C:/Users/Tal Barami/Documents/GitHub/Hurricane-Evacuation-Planner/Hurricane-Evacuation-Planner/Hurricane-Evacuation-PlannerTests/resources/file4.txt");
+            var avg = 0.0;
+            var times = 10000;
+            var simulator = new Simulator(state);
 
-            for (var i = 0; i < 4; i++)
+            for (var i = 0; i < times; i++)
             {
-                var blockedEdges = Convert.ToString(i, 2).PadLeft(maybeBlocked.Count, '0').Select(c => c != '0').ToArray();
-                for (var j = 0; j < maybeBlocked.Count; j++)
-                {
-                    maybeBlocked[j].ActuallyBlocked = blockedEdges[j];
-                }
-                var simulator = new Simulator(state);
                 simulator.Start();
+                avg += simulator.Score;
             }
-
+            Console.WriteLine($"Average score: {avg / times} ; Initial state utility: {state.Utility}");
             Console.Read();
         }
     }

@@ -72,6 +72,7 @@
     <Content Include="resources\file1.txt" />
     <Content Include="resources\file2.txt" />
     <Content Include="resources\file3.txt" />
+    <Content Include="resources\file4.txt" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

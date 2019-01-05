@@ -13,7 +13,6 @@ namespace Hurricane_Evacuation_Planner.GraphComponents.SimulatorGraphComponents
         public MaybeBlockedEdge(int id, int v1, int v2, double weight, double blockageProbability) : base(id, v1, v2, weight)
         {
             BlockageProbability = blockageProbability;
-            ActuallyBlocked = new Random().NextDouble() <= blockageProbability;
         }
 
         public MaybeBlockedEdge(int id, IVertex v1, IVertex v2, double weight, double blockageProbability) : this(id, v1.Id, v2.Id, weight, blockageProbability)
