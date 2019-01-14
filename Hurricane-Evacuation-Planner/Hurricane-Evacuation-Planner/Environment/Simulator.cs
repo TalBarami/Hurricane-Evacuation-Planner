@@ -12,14 +12,19 @@ namespace Hurricane_Evacuation_Planner.Environment
         public ValueIteration Policy { get; }
         public double Score => FinalState.Agent.Saved;
 
+        private bool debug;
         private static readonly Random Random = new Random(123);
 
-        public Simulator(IState initialInitialState)
+        public Simulator(IState initialInitialState, bool debug)
         {
+            this.debug = debug;
             Deadline = initialInitialState.Deadline;
             InitialState = initialInitialState;
             Policy = new ValueIteration(InitialState);
             Policy.UpdateStates();
+        }
+        public Simulator(IState initialInitialState) : this(initialInitialState, false)
+        {
         }
 
         public void Start()
@@ -28,23 +33,19 @@ namespace Hurricane_Evacuation_Planner.Environment
             var currentState = InitialState;
             while (!currentState.Goal)
             {
-                /*Console.WriteLine($"Current State: {StateToString(currentState)}");
-                Console.WriteLine("Possible transitions:");*/
+                Print($"Current State: {StateToString(currentState)}");
+                Print("Possible transitions:");
                 var possibleMoves = string.Join("\n", currentState.ValidMoves.Select(vm => $"\t{vm} -> \t{string.Join("\n\t\t\t", vm.NewStates.Select(StateToString))}"));
 
-                //Console.WriteLine(possibleMoves);
+                Print(possibleMoves);
                 var move = currentState.BestMove;
-                //Console.WriteLine($"Selected Action: {move} U{move.ExpectedValue()}\n");
+                Print($"Selected Action: {move} U{move.ExpectedValue()}\n");
                 currentState = move.NewStates.First(s => InitialState.Match(s));
             }
 
             FinalState = currentState;
-            /*Console.WriteLine($"Final State: {StateToString(FinalState)}\n");
-            Console.WriteLine("Simulation is over.");*/
-
-            /*Console.WriteLine();
-            Policy.States.ForEach(s => Console.WriteLine($"{s}\n"));*/
-            /*Console.ReadLine();*/
+            Print($"Final State: {StateToString(FinalState)}\n");
+            Print("Simulation is over.");
         }
 
         public string StateToString(IState state)
@@ -63,7 +64,15 @@ namespace Hurricane_Evacuation_Planner.Environment
                 });
             var time = (int)state.Time;
 
-            return $"({position}, {string.Join(", ", evacuees)}, {saved}, {string.Join(", ", blockages)}, {time}) U{state.Utility} P{state.Probability}";
+            return $"({position}, {string.Join(", ", evacuees)}, {saved}, {string.Join(", ", blockages)}, {time}) U{state.Utility} P{state.Probability} C{state.Agent.Carry}";
+        }
+
+        public void Print(string s = "")
+        {
+            if (debug)
+            {
+                Console.WriteLine(s);
+            }
         }
 
     }
